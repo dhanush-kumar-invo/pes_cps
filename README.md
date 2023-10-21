@@ -312,15 +312,11 @@ magic -T /home/ishan/OpenLane/pdks/sky130A/libs.tech/magic/sky130A.tech lef read
 
 The gate count post-synthesis is given below:
 
-![Gate Count](https://user-images.githubusercontent.com/70513539/192704243-202cdbc8-1751-4be5-aa30-690918d03af1.png)
-
 ```
 Total Cells= 212
 ```
 
 #### Area
-
-![Screenshot from 2022-09-27 11-48-31](https://user-images.githubusercontent.com/70513539/192448550-201bad8a-6ab5-4c0d-b096-4dfb8209b9d0.png)
 
 ```
 Area=21895.951e-12 m^2
@@ -330,27 +326,12 @@ Area=21895.951e-12 m^2
 ```
 $ sta <br>
 
-OpenSTA> read_liberty -max /home/ishan/OpenLane/pdks/sky130A/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__ff_n40C_1v56.lib
-
-
-OpenSTA> read_liberty -min /home/ishan/OpenLane/pdks/sky130A/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__ff_n40C_1v56.lib
-
-OpenSTA> read_verilog /home/ishan/OpenLane/pdks/sky130A/libs.ref/sky130_fd_sc_hd/lib/iiitb_cps.v
-
-
-OpenSTA> link_design iiitb_cps 
-
-OpenSTA> read_sdc /home/ishan/OpenLane/pdks/sky130A/libs.ref/sky130_fd_sc_hd/lib/iiitb_cps.sdc
-
-OpenSTA> read_spef /home/ishan/OpenLane/pdks/sky130A/libs.ref/sky130_fd_sc_hd/lib/iiitb_cps.spef
-
 OpenSTA> set_propagated_clock [all_clocks] <br>
 
 OpenSTA> report_checks <br>
 ```
 
 
-![Performance](https://user-images.githubusercontent.com/70513539/192699525-834baef6-6d3c-4ec0-b44b-f8504185bca4.png)
 
 
 ```
@@ -367,7 +348,6 @@ Flip Ratio=0.217
 
 ### Power
 
-![Power](https://user-images.githubusercontent.com/70513539/192704518-6bbc87b7-ba46-411d-9d3f-22bf6ccaf61b.png)
 
 ```
 Total Power: 7.28e-5 Watts
