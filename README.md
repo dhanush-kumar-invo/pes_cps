@@ -40,13 +40,15 @@ $   sudo apt get install iverilog gtkwave
 ### Functional Simulation
 To clone the Repository and download the Netlist files for Simulation, enter the following commands in your terminal.
 ```
-$   sudo apt install -y git
-$   git clone https://github.com/ishan-desai64/iiitb_cps
-$   cd iiitb_cps
-$   iverilog iiitb_cps iiitb_cps.v iiitb-cps_tb.v
+$   iverilog cps.v cps_tb.v
 $   ./a.out
+```
+![Screenshot from 2023-10-25 20-44-15](https://github.com/dhanush-kumar-invo/pes_cps/assets/73644447/fe92a906-93eb-4f2e-9bc6-46f1db885b9b)
+
+```
 $   gtkwave dump.vcd
 ```
+![Screenshot from 2023-10-25 20-44-55](https://github.com/dhanush-kumar-invo/pes_cps/assets/73644447/1c7b2fc5-b77b-4f5f-876e-47993a009c69)
 
 ## Synthesis of Verilog Code
 #### About Yosys
@@ -94,27 +96,15 @@ Below picture gives an insight of the procedure. Here while using iverilog, you 
 
 ## Post-Synthesis Simulation
 
-![Screenshot from 2022-08-17 21-41-56](https://user-images.githubusercontent.com/70513539/185191072-5dc9a4e1-bbde-4eef-bd92-a312a96e69a5.png)
+![gtkwave](https://github.com/dhanush-kumar-invo/pes_cps/assets/73644447/6d8f6243-3e37-4900-b778-61a75a54b456)
 
 
 ## Stats
 
-![Screenshot from 2022-08-17 21-47-03](https://user-images.githubusercontent.com/70513539/185190966-255f8aff-070d-49b3-9d6c-be069313b56b.png)
+![Screenshot from 2023-10-25 20-42-19](https://github.com/dhanush-kumar-invo/pes_cps/assets/73644447/2f7ed401-8242-4c6b-a28b-14743fa9fccc)
 
 ## Physical Design using SKYwater 130 PDK:
 
-In this module we will see various ASIC Design flows such as
-1) RTL Design
-2) Synthesis
-3) FloorPlan
-4) Placement
-5) Clock Tree Synthesis(CTS)
-6) Routing
-7) SignOff
-8) Tapeout
-
-We have already completed first two parts of ASIC Design flow RTL design and Synthesis,from now we will complete remaining steps with the help of 
-OpenLane and Magic softwares.
 
 ### OpenLane
 OpenLane is an automated RTL to GDSII flow based on several components including OpenROAD, Yosys, Magic, Netgen, CVC, SPEF-Extractor, CU-GR, Klayout and a number of custom scripts for design exploration and optimization. The flow performs full ASIC implementation steps from RTL all the way down to GDSII. To know more go to https://github.com/The-OpenROAD-Project/OpenLane
@@ -136,225 +126,3 @@ $   sudo make
 ```
 $ sudo make test
 ```
-## Magic
-
-Magic is a venerable VLSI layout tool, written in the 1980's at Berkeley by John Ousterhout, now famous primarily for writing the scripting interpreter language Tcl. Due largely in part to its liberal Berkeley open-source license, magic has remained popular with universities and small companies. The open-source license has allowed VLSI engineers with a bent toward programming to implement clever ideas and help magic stay abreast of fabrication technology. However, it is the well thought-out core algorithms which lend to magic the greatest part of its popularity. Magic is widely cited as being the easiest tool to use for circuit layout, even for people who ultimately rely on commercial tools for their product design flow. More about magic at http://opencircuitdesign.com/magic/index.html
-
-#### Installation Steps
-1) Type this following command in home directory to downlaod
-```
-$   sudo apt-get install m4
-$   sudo apt-get install tcsh
-$   sudo apt-get install csh
-$   sudo apt-get install libx11-dev
-$   sudo apt-get install tcl-dev tk-dev
-$   sudo apt-get install libcairo2-dev
-$   sudo apt-get install mesa-common-dev libglu1-mesa-dev
-$   sudo apt-get install libncurses-dev
-
-```
-2) Type following command to download in home directory
-
-```
-$   git clone https://github.com/RTimothyEdwards/magic
-$   cd magic/
-$   ./configure
-$   sudo make
-$   sudo make install
-
-```
-### i) Preperation
-To get Layout first use followig steps
-```
-1) Create folder iiitb_cps in OpenLane
-2) Create src folder in iiitb_cps
-3) copy file iiitb_cps.v in src
-4) create config.jason file in iiitb_cps folder
-
-```
-To open magic layout type following command in OpenLane directory
-```
-sudo make mount
-./flow.tcl -interactive
-```
-This above written command will create a space where type following command
-```
-prep -design iiitb_cps 
-set lefs [glob $::env(DESIGN_DIR)/src/*.lef]
-add_lefs -src $lefs
-```
-### 1) Synthesis
-To get synthesis types following command
-```
-run_synthesis
-```
-To get report do following steps
-1) Go to iiitb_cps in OpenLane
-2) Go to 'runs' folder which is created after running above command 
-3) Go to logs folder and open synthesis folder
-4) open 32-synthesis log
-
-You will see following results
-
-![Screenshot from 2022-08-30 20-57-59](https://user-images.githubusercontent.com/70513539/187478005-787bc114-9446-4ee2-99bc-a87dacfc8f83.png)
-
-### 2) Floorplan
-
-In the VLSI physical design, floorplanning is an essential design step, as it determines the size, shape, and locations of modules in a chip and as such it estimates the total chip area, the interconnects, and, delay. Computationally, VLSI floorplanning is an NP hard problem.
-
-Type following command to get floorplan result
-
-```
-run_floorplan
-```
-To see results of floorplan got to 
-```
-OpenLane-->iiitb_cps-->runs-->results-->floorplan
-```
-Type following command to get results
-```
-magic -T /home/ishan/OpenLane/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.nom.lef def read iiitb_cps.def &
-```
-##### Result
-
-![Screenshot from 2022-08-30 21-06-12](https://user-images.githubusercontent.com/70513539/187486007-d65aac54-20b0-487e-9689-108d4152bb93.png)
-
-
-### 3) Placement
-Placement is the process of finding a suitable physical location for each cell in the block.
-Timing
-power area
-optimization
-Routable design
-Minimum cell density 
-pin density(Reduce the congestion  due to cells and pins) 
-Minimum timing DRC’s
-
-Type following command to get Placement result
-
-```
-run_placement
-```
-To see results of floorplan got to 
-```
-OpenLane-->iiitb_cps-->runs-->results-->placement
-```
-Type following command to get results
-```
-magic -T /home/ishan/OpenLane/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.nom.lef def read iiitb_cps.def &
-```
-##### Result
-
-![Screenshot from 2022-08-30 15-37-42](https://user-images.githubusercontent.com/70513539/187410827-9b4a5cbe-a951-4167-88ce-15ac559dcaf6.png)
-
-
-![Screenshot from 2022-08-30 15-50-04](https://user-images.githubusercontent.com/70513539/187412879-87677109-3d89-4eb5-92fc-d500b91de42a.png)
-
-
-### 4) Clock Tree Synthesis
-
-Clock Tree Synthesis is a technique for distributing the clock equally among all sequential parts of a VLSI design. The purpose of Clock Tree Synthesis is to reduce skew and delay. Clock Tree Synthesis is provided the placement data as well as the clock tree limitations as input.
-
-Type following command to get Placement result
-
-```
-run_cts
-```
-To see results of floorplan got to 
-```
-OpenLane-->iiitb_cps-->runs-->results-->cts
-```
-###### Result
-
-![Screenshot from 2022-08-30 21-17-43](https://user-images.githubusercontent.com/70513539/187482534-903e6184-61c4-4bb7-a10e-233d55312821.png)
-
-##### Power report
-
-![Screenshot from 2022-08-30 21-20-41](https://user-images.githubusercontent.com/70513539/187483032-771ae517-3e51-4b43-9d81-ee3d89a4e359.png)
-
-#### Gate Count
-
-To get gate count go to 
-```
-OpenLane--> iiitb_cps-->runs-->results-->cts
-```
-
-![Screenshot from 2022-09-27 11-35-07](https://user-images.githubusercontent.com/70513539/192450398-52543c61-51bd-4790-8bb7-07a8be7ed732.png)
-
-
-
-
-
-
-### 5) Routing
-
-Making physical connections between signal pins using metal layers are called Routing. Routing is the stage after CTS and optimization where exact paths for the interconnection of standard cells and macros and I/O pins are determined.
-
-Type following command to get Routing result
-```
-run_routing
-```
-To see results of floorplan got to 
-```
-OpenLane-->iiitb_cps-->runs-->results-->routing
-```
-Type following command to get results
-```
-magic -T /home/ishan/OpenLane/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.nom.lef def read iiitb_cps.def &
-```
-##### Result
-
-![Screenshot from 2022-08-30 21-22-30](https://user-images.githubusercontent.com/70513539/187483507-78be14bb-2c11-48dd-bb69-9d0bae2f0d74.png)
-
-# Results
-
-### Gate Count
-
-The gate count post-synthesis is given below:
-
-```
-Total Cells= 212
-```
-
-#### Area
-
-```
-Area=21895.951e-12 m^2
-```
-
-### Performance
-```
-$ sta <br>
-
-OpenSTA> set_propagated_clock [all_clocks] <br>
-
-OpenSTA> report_checks <br>
-```
-
-
-
-
-```
-Maximum Frequency = 1/(Time Period-Slack)=1/(64.96-62.7)=0.44GHz
-```
-### Flop Ratio
-
-```
-
-flop Ratio= (No. of D-flip flop Cells)/(No. of Total Cells)
-Flip Ratio= (46/212)
-Flip Ratio=0.217
-```
-
-### Power
-
-
-```
-Total Power: 7.28e-5 Watts
-```
-
-
-
-## FUTURE WORKS
-* Signoff
-* Tapeout
