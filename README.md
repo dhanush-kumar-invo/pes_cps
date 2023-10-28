@@ -98,6 +98,33 @@ Below picture gives an insight of the procedure. Here while using iverilog, you 
 
 ![gtkwave](https://github.com/dhanush-kumar-invo/pes_cps/assets/73644447/6d8f6243-3e37-4900-b778-61a75a54b456)
 
+# read design
+```
+read_verilog cps.v
+```
+# generic synthesis
+```
+synth -top cps
+```
+# mapping to mycells.lib
+```
+dfflibmap -liberty /home/dhanush/VLSI/sky130RTLDesignAndSynthesisWorkshop/lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+abc -liberty /home/dhanush/VLSI/sky130RTLDesignAndSynthesisWorkshop/lib/sky130_fd_sc_hd__tt_025C_1v80.lib -script +strash;scorr;ifraig;retime,{D};strash;dch,-f;map,-M,1,{D}
+clean
+flatten
+```
+
+# write synthesized design
+```
+write_verilog -noattr cps_synth.v
+```
+```
+show
+```
+![Screenshot from 2023-10-28 16-13-42](https://github.com/dhanush-kumar-invo/pes_cps/assets/73644447/b18dbf39-eb40-4ce5-9ba2-866528082a71)
+
+![Screenshot from 2023-10-28 16-01-49](https://github.com/dhanush-kumar-invo/pes_cps/assets/73644447/95454aab-45d5-48e6-b1ca-a95a95a0cb56)
+
 
 ## Stats
 
